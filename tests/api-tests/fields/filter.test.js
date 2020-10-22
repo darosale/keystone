@@ -16,6 +16,7 @@ multiAdapterRunners().map(({ runner, adapterName }) =>
         ({ skipCrudTest, unSupportedAdapterList = [] }) =>
           !skipCrudTest && !unSupportedAdapterList.includes(adapterName)
       )
+      .filter(({ name }) => name === 'Text')
       .forEach(mod => {
         (mod.testMatrix || ['default']).forEach(matrixValue => {
           const listKey = 'Test';
@@ -124,7 +125,7 @@ multiAdapterRunners().map(({ runner, adapterName }) =>
                 );
               }
               if (mod.supportedFilters.includes('equality_case_insensitive')) {
-                test.skip(
+                test.only(
                   `Equals - Case Insensitive`,
                   withKeystone(({ keystone }) =>
                     match(keystone, { [`${fieldName}_i`]: storedValues[3][fieldName] }, [2, 3, 4])
